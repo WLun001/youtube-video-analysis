@@ -1,5 +1,5 @@
 //assume there is data in parquet
-val parquetRDD = sqlContext.sql("SELECT * FROM parquet.`/user/cloudera/labs/videos.parquet`")
+val parquetRDD = sqlContext.sql("SELECT * FROM parquet.`/user/cloudera/videos/videos.parquet`")
 parquetrdd.count
 
 //cast to relevant data type
