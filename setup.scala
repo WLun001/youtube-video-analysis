@@ -10,7 +10,7 @@ val videosFlatten = videoRemoveHead.flatMap(x=>x)
 
 // eliminate unwanted characters
 val videosTabRemoved = videosFlatten.map(_.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
-val ids = videosTabRemoved.map(x => x(0)).collect
+//val ids = videosTabRemoved.map(x => x(0)).collect
 
 // replace null description to "no description"
 val videosTuple = videosTabRemoved.map(x => x match{
