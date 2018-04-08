@@ -1,7 +1,6 @@
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Calendar
-import org.joda.time.Days
 
 // date format from trending date
 val DATE_FORMAT_INCOMPLETE = "yy.dd.mm"
@@ -55,7 +54,6 @@ val videoIds = trendingPublish.filter(x => x._2._1.before(addDay(x._2._2, 7))).k
 // benefit for advertisor to find youtuber for advertisement
 // (channel_title, category_id)
 val potentialChannel = formattedRDD.filter(x => videoIdsList.contains(x._1)).map(x => (x._4, x._5))
-
 
 //read category name from text file
 val idsplit = sc.textFile("file:/home/cloudera/categoryid.txt").map(_.split(",")).map(line => (line(0), line(1)))
