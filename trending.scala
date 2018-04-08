@@ -2,6 +2,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Calendar
 import org.joda.time.Days
+
 // date format from trending date
 val DATE_FORMAT_INCOMPLETE = "yy.dd.mm"
 //date format from trending date
@@ -36,18 +37,22 @@ def addDay(date: Date, days: Int) : Date = {
   return dateAux.getTime()
 }
 
-// get trending date and publish date in tuple
-val formatter = formattedRDD.map(x => 
-	(formatDate(x._2, DATE_FORMAT_INCOMPLETE),formatDate(removeExtraDigit(x._6), DATE_FORMAT)))
+//get tuple (video_id, (trending_date, publish_date))
+val formatter = formattedRDD.map(x =>
+ (x._1, (formatDate(x._2, DATE_FORMAT_INCOMPLETE),formatDate(removeExtraDigit(x._6), DATE_FORMAT))))
 
-val trendingPublish = formatter.map(x => (convertStringToDate(x._1), convertStringToDate(x._2)))
+//convert to Date
+val trendingPublish = formatter.map(x => (x._1, (convertStringToDate(x._2._1), convertStringToDate(x._2._2))))
 
-val findTrendDate = trendingPublish.filter(x => x._1.before(addDay(x._2, 7)))
+//filter if trending date is between 7-days after publish date
+// get all the filtered videoIds
+val videoIds = trendingPublish.filter(x => x._2._1.before(addDay(x._2._2, 7)))keys
+ //.coalesce(1).saveAsTextFile("newfile")
 
-val filterDate = trendingPublish.filter(_._1.after(convertStringToDate("13/1/2018")))
-val filterDate = trendingPublish.filter(_._1.after(convertStringToDate("13/1/2018")))
+ val videoIdsList = videoIds.collect.toList
 
-
-
-
-coalesce(1).saveAsTextFile("newfile")
+// get tuple of potentialChannel where those video become trend after publishing in 7 days. 
+// benefit for advertisor to find youtuber for advertisement
+// (channel_title, category_id)
+val potentialChannel = formattedRDD.filter(x => videoIdsList.contains(x._1)).map(x => (x._4, x._5))
+potentialChannel.collect

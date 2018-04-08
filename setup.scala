@@ -25,5 +25,5 @@ val keyValue = videosTuple.map(x =>
 val reduceRDD= keyValue.map(tup =>
     (tup._1, tup)).reduceByKey { case (a, b) => a }.map(_._2)
 
-val formattedrdd = reduceRDD.map(x => (x._1, x._2._1, x._2._2, x._2._3, x._2._4,
+val formattedRDD = reduceRDD.map(x => (x._1, x._2._1, x._2._2, x._2._3, x._2._4,
  x._2._5, x._2._6, x._2._7, x._2._8, x._2._9, x._2._10, x._2._11, x._2._12, x._2._13, x._2._14, x._2._15))
