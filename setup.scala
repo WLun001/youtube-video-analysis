@@ -8,7 +8,7 @@ val videoRemoveHead = videosSplit.mapPartitionsWithIndex((index, it) => if(index
 // element(0) is a row of data
 val videosFlatten = videoRemoveHead.flatMap(x=>x)
 
-// eliminate unwanted characters
+// split by , which are not in " "
 val videosTabRemoved = videosFlatten.map(_.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
 //val ids = videosTabRemoved.map(x => x(0)).collect
 
