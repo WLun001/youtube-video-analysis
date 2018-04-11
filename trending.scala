@@ -50,12 +50,13 @@ val videoIds = trendingPublish.filter(x => x._2._1.before(addDay(x._2._2, 7))).k
 // get tuple of potentialChannel where those video become trend after publishing in 7 days. 
 // benefit for advertisor to find youtuber for advertisement
 // (category_id, channel_title)
-val potentialChannel = formattedRDD.filter(x => videoIdsList.contains(x._1)).map(x => (x._5, x._4))
+val potentialChannel = formattedRDD.filter(x => videoIds.contains(x._1)).map(x => (x._5, x._4))
 
 //read category name from text file and collect as key-value pairs
 val category = sc.textFile("file:/home/cloudera/categoryid.txt").map(_.split(",")).map(line => (line(0), line(1)))
 
 //match category_id with category name
 val result = potentialChannel.join(category).map(x => (x._2._1, x._2._2)).sortBy(_._2)
+result.collect
 
  //.coalesce(1).saveAsTextFile("newfile")
